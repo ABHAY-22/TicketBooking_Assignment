@@ -74,6 +74,7 @@ app.post("/api/login" , async(req , res)=>{
                 console.log(decode);
                 const user_ID = await User.findOne({_id: decode.userID})
                 req.u_ID = user_ID;
+                req.user=user_ID
                 next();
             });
         } catch (error) {
@@ -100,7 +101,7 @@ app.post("/api/login" , async(req , res)=>{
 
 
    
-    app.get("/api/flights" ,async(req , res)=>{
+    app.get("/api/flights/id" ,async(req , res)=>{
         
         try {
 
@@ -134,15 +135,12 @@ app.post("/api/login" , async(req , res)=>{
     app.put('/api/flights/',protected, async(req, res) => {
         try {
             const data = req.body;
-           
-            const update = await Flight.findById(req.params.id);
+            const id = req.query.id; 
+            const update = await Flight.findById(id);
 
 
 
-            if (!update) {
-                return res.status(404).send('Flight not found');
-            }
-    
+            
 
 
             update.airline = data.airline || update.airline;
@@ -165,6 +163,9 @@ app.post("/api/login" , async(req , res)=>{
         }
     });
 
+    
+
+
 
     app.delete('/api/flights/',protected, async(req, res) => {
         try {
@@ -179,7 +180,47 @@ app.post("/api/login" , async(req , res)=>{
 
 
 
-//for booking and dasboard
+
+
+///booking
+
+app.post('/api/booking', protected, async (req, res) => {
+    try {
+       const user=req.user
+        console.log(user)
+
+       
+        // const booking = await Booking.create({ title,  flight });
+
+        
+        res.send(user)
+    } catch (error) {
+       
+        console.error('Error creating booking:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+
+
+
+app.post('/api/booking', protected, async (req, res) => {
+
+
+    try {
+        const data = await Flight.create(req.body);
+        res.status(201).send(data); 
+        console.log('data posted: ', data);
+    } catch (error) {
+        console.error('Error posting data: ', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 
 
 
