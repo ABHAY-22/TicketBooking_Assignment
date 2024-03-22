@@ -60,22 +60,24 @@ app.post("/api/login" , async(req , res)=>{
 
 
 
+  
+
     const protected = (req, res, next) => {
         try {
             const token = req.headers.authorization.split(" ")[1];
-            console.log(token)
+            console.log(token);
             jwt.verify(token, "abhay", async function(err, decode) {
-                console.log(decode);
-                const user_ID = await User_module.findOne({_id: decode.userID})
-                req.u_ID = user_ID;
-                if (err) {
-                    console.log(err)
-                    res.status(401).send('Kindly login');
-                } else {
-                    next();
+                if (err || !decode) { 
+                    console.log(err);
+                    return res.status(401).send('Kindly login');
                 }
+                console.log(decode);
+                const user_ID = await User.findOne({_id: decode.userID})
+                req.u_ID = user_ID;
+                next();
             });
         } catch (error) {
+            console.log(error);
             res.status(401).send('Kindly login');
         }
     }
@@ -98,7 +100,7 @@ app.post("/api/login" , async(req , res)=>{
 
 
    
-    app.get("/api/flights/:id" , async(req , res)=>{
+    app.get("/api/flights" ,async(req , res)=>{
         
         try {
 
@@ -112,6 +114,58 @@ app.post("/api/login" , async(req , res)=>{
         }
     })
 
+
+    app.post('/api/flights', protected, async (req, res) => {
+
+
+        try {
+            const data = await Flight.create(req.body);
+            res.status(201).send(data); 
+            console.log('data posted: ', data);
+        } catch (error) {
+            console.error('Error posting data: ', error);
+            res.status(500).send('Internal Server Error');
+        }
+    });
+
+
+    
+    
+    app.put('/api/flights/:id', async(req, res) => {
+        try {
+            const data = req.body;
+           
+            const update = await Flight.findById(req.params.id);
+
+
+
+            if (!update) {
+                return res.status(404).send('Flight not found');
+            }
+    
+
+
+            update.airline = data.airline || update.airline;
+            update.flightNo = data.flightNo || update.flightNo;
+            update.departure = data.departure || update.departure;
+            update.arrival = data.arrival || update.arrival;
+            update.departureTime = data.departureTime || update.departureTime;
+            update.arrivalTime = data.arrivalTime || update.arrivalTime;
+            update.seats = data.seats || update.seats;
+            update.price = data.price || update.price;
+        
+
+          const updatedFlight = await update.save();
+            res.status(204).send(updatedFlight);
+            console.log('data updated');
+        } catch (error) {
+            console.error('Error updating flight data:', error); 
+         
+         res.status(500).send('Internal Server Error');
+        }
+    });
+
+   
 
 
 
