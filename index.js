@@ -60,6 +60,73 @@ app.post("/api/login" , async(req , res)=>{
 
 
 
+    const protected = (req, res, next) => {
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            console.log(token)
+            jwt.verify(token, "abhay", async function(err, decode) {
+                console.log(decode);
+                const user_ID = await User_module.findOne({_id: decode.userID})
+                req.u_ID = user_ID;
+                if (err) {
+                    console.log(err)
+                    res.status(401).send('Kindly login');
+                } else {
+                    next();
+                }
+            });
+        } catch (error) {
+            res.status(401).send('Kindly login');
+        }
+    }
+    
+    
+
+
+
+    app.get("/api/flights" , async(req , res)=>{
+       
+        try {
+            const data = await Flight.find();
+            res.status(200).send(data)
+            
+            console.log('data recived');
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+
+   
+    app.get("/api/flights/:id" , async(req , res)=>{
+        
+        try {
+
+            const flightId = req.params.id;
+            const data = await Flight.find(flightId);
+            res.status(200).send(data)
+            
+            console.log('flight date');
+        }    catch (error) {
+            console.log(error)
+        }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.listen('8000' , ()=>{

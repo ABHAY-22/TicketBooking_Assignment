@@ -26,7 +26,7 @@ const Flight_Schema = mongoose.Schema({
 })
 
 
-const Booking_Schema = mongoose.Schema({
+const BookingSchema = mongoose.Schema({
     title:{type:String , required:true},
     user:{type: ObjectId ,ref: 'User', required:true},
     flight:{type:ObjectId ,ref: 'Flight', required:true}
@@ -34,7 +34,7 @@ const Booking_Schema = mongoose.Schema({
 
 const User = mongoose.model("User" , userSchema);
 const Flight = mongoose.model("Flight" , Flight_Schema);
-const Booking = mongoose.model("Booking" , Booking_Schema);
+const Booking = mongoose.model("Booking" , BookingSchema);
 
 
 module.exports = {connection , User , Flight,Booking };
