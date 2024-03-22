@@ -46,6 +46,9 @@ PUT / PATCH
 /api/flights/:id
 This endpoint should allow users to update the details of a specific flight identified by its ID. (Protected Route)
 
+![image](https://github.com/ABHAY-22/TicketBooking_Assignment/assets/51116785/e6ef7515-d641-499c-b236-8cbe2862ea4d)
+
+
 DELETE
 /api/flights/:id
 This endpoint should allow users to delete a specific flight identified by its ID. (Protected Route)
