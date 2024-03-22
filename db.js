@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const connection = mongoose.connect(`mongodb+srv://abhayera2013:Abhay123@cluster0.gdyvizs.mongodb.net/AirTicketBooking`);
 
-const{Schema}=mongoose
+const{Schema}=mongoose;
 
 const ObjectId = Schema.Types.ObjectId;
 
