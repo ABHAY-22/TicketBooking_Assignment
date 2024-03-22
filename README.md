@@ -64,14 +64,14 @@ This endpoint should allow the user to book flights. (Protected Route)
 
 GET
 /api/dashboard
-This point should list all the bookings so far with the user and flight details. (Populate the entire flight and user data, and not just id’s) (Protected Route)
+This point should list all the bookings so far with the user and flight details.
 
 PUT/PATCH
 /api/dashboard/:id
 
 
 This endpoint should allow the user to edit / update a booking. (Protected Route)
-204
+
 DELETE
 
 /api/dashboard/:id
