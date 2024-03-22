@@ -131,7 +131,7 @@ app.post("/api/login" , async(req , res)=>{
 
     
     
-    app.put('/api/flights/:id', async(req, res) => {
+    app.put('/api/flights/',protected, async(req, res) => {
         try {
             const data = req.body;
            
@@ -157,7 +157,7 @@ app.post("/api/login" , async(req , res)=>{
 
           const updatedFlight = await update.save();
             res.status(204).send(updatedFlight);
-            console.log('data updated');
+            console.log('Flight data updated');
         } catch (error) {
             console.error('Error updating flight data:', error); 
          
@@ -165,8 +165,21 @@ app.post("/api/login" , async(req , res)=>{
         }
     });
 
+
+    app.delete('/api/flights/',protected, async(req, res) => {
+        try {
+            const data = await Flight.findByIdAndDelete(req.params.id);
+            res.status(200).send(data);
+            console.log('data deleted');
+        } catch (error) {
+            console.log(error + 'this error from delete fun')
+        }
+    });
    
 
+
+
+//for booking and dasboard
 
 
 
